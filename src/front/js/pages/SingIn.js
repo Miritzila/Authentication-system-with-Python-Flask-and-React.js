@@ -9,27 +9,30 @@ export const SingIn = () => {
     const [password, setPassword] = useState("")
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        actions.login(email, password)
+    }
 
-        fetch('https://jubilant-palm-tree-wr7wj6jww4q4fg6p5-3001.app.github.dev/api/sing_in', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
+    fetch(process.env.BACKEND_URL + "/api/sing_in", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
         })
-        .then(response => response.json())
+    })
+        .then(resp => resp.json())
         .then(data => {
-            if (data.error) {
-                console.error('Error:', data.error);
-            } else {
-                console.log('Success:', data);
+            console.log(data)
+            if (data.token) {
+                localStorage.setItem("token", data.token)
+                localStorage.setItem("user", JSON.stringify(data.user))
+                actions.login(data.token)
             }
         })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
+        .catch(error => console.error("Error:", error))
 
     return (
         <div className="text-center mt-5">

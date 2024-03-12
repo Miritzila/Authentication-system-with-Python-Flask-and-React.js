@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
 export const SingUp = () => {
-  const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -39,7 +38,7 @@ export const SingUp = () => {
       }
 
       const data = await response.json();
-      handleSuccess(data); // Manejar el éxito de la solicitud
+      handleSuccess(data);
     } catch (err) {
       console.error(err);
       setErrorMessage("No hemos conseguido registrar tu cuenta");
@@ -58,7 +57,7 @@ export const SingUp = () => {
 
   const handleSuccess = (data) => {
     alert("Te has registrado con éxito.");
-    window.location.href = "/home";
+    window.location.href = "/profile";
   };
 
   return (
