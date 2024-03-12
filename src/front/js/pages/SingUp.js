@@ -16,13 +16,13 @@ export const SingUp = () => {
       validateForm();
 
       const bodyData = {
-        email,
-        password,
-        password_confirmation: passwordConfirmation,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
       };
 
       const options = {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -30,7 +30,7 @@ export const SingUp = () => {
       };
 
       const response = await fetch(
-        "https://jubilant-palm-tree-wr7wj6jww4q4fg6p5-3001.app.github.dev/api/sing_up",
+        process.env.BACKEND_URL + "/api/sing_up",
         options
       );
 

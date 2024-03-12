@@ -7,7 +7,7 @@ api = Blueprint('api', __name__)
 
 CORS(api)
 
-@api.route('/api/sing_up', methods=['POST'])
+@api.route('/sing_up', methods=['POST'])
 def handle_sing_up():
     request_data = request.get_json()
     if 'email' not in request_data:
@@ -34,7 +34,7 @@ def handle_sing_up():
 
     return jsonify(response_body), 200
 
-@api.route('/api/sing_in', methods=['POST'])
+@api.route('/sing_in', methods=['POST'])
 def handle_sing_in():
     request_data = request.get_json()
     if 'email' not in request_data:
