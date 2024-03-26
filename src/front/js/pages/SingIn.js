@@ -3,37 +3,41 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
 export const SingIn = () => {
-
+    const BACKEND_URL = process.env.BACKEND_URL
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handleSignIn = async () => {
+        
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/token`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+            const data = await response.json();
+            handleSuccess(data);
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
     const handleSubmit = (e) => {
-        e.preventDefault()
-        actions.login(email, password)
+        e.preventDefault();
+        handleSignIn();
     }
 
-    fetch(process.env.BACKEND_URL + "/api/sing_in", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
-    })
-        .then(resp => resp.json())
-        .then(data => {
-            console.log(data)
-            if (data.token) {
-                localStorage.setItem("token", data.token)
-                localStorage.setItem("user", JSON.stringify(data.user))
-                actions.login(data.token)
-            }
-        })
-        .catch(error => console.error("Error:", error))
-
+    const handleSuccess = (data) => {
+        window.location.href = "/profile";
+    }
+    
     return (
         <div className="text-center mt-5">
             <div className="container text-center">
