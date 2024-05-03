@@ -57,7 +57,7 @@ export const SingUp = () => {
 
   const handleSuccess = (data) => {
     alert("Te has registrado con éxito.");
-    window.location.href = "/profile";
+    window.location.href = "/sing_in";
   };
 
   return (

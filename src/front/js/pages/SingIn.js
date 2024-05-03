@@ -1,5 +1,6 @@
-import React, { useContext, useState  } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
 
 export const SingIn = () => {
@@ -7,11 +8,13 @@ export const SingIn = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate();
+    const [alertMessage, setAlertMessage] = useState("")
 
     const handleSignIn = async () => {
-        
+
         try {
-            const response = await fetch(`${BACKEND_URL}/api/token`, {
+            const response = await fetch(`${BACKEND_URL}/api/sing_in`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,8 +24,20 @@ export const SingIn = () => {
                     password: password
                 })
             });
+
             const data = await response.json();
-            handleSuccess(data);
+            if (data.token === undefined) {
+                setAlertMessage(
+                    <div className="alert alert-danger">
+                        Usuario o contraseña incorrectos
+                    </div>
+                )
+            }
+            else {
+                localStorage.setItem("token", data.token);
+                navigate("/profile");
+            }
+
 
         } catch (error) {
             console.error("Error:", error);
@@ -34,10 +49,6 @@ export const SingIn = () => {
         handleSignIn();
     }
 
-    const handleSuccess = (data) => {
-        window.location.href = "/profile";
-    }
-    
     return (
         <div className="text-center mt-5">
             <div className="container text-center">
@@ -46,8 +57,8 @@ export const SingIn = () => {
                     </div>
                     <div className="col-8">
                         <div className="card">
-                        <br></br>
-                        <h3 className="card-title">Accede a tu página personal</h3 >
+                            <br></br>
+                            <h3 className="card-title">Accede a tu página personal</h3 >
                             <form onSubmit={handleSubmit}>
                                 <div className="card-body">
                                     <div className="mb-3 row">
@@ -62,6 +73,7 @@ export const SingIn = () => {
                                             <input type="password" className="form-control" id="inputPassword" value={password} onChange={(e) => setPassword(e.target.value)} />
                                         </div>
                                     </div>
+                                    {alertMessage}
                                     <button type="submit" className="btn btn-primary">
                                         Entrar
                                     </button>
