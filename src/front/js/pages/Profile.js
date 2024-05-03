@@ -1,10 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Context } from "../store/appContext";
 
 export const Profile = () => {
-	const { store, actions } = useContext(Context);
+    const token = localStorage.getItem("token")
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (token === null) {
+			navigate("/sing_in");
+		}
+		console.log(token)
+    }, [token, navigate]);
 
 	return (
 		<div className="container">

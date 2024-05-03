@@ -5,7 +5,6 @@ import "../../styles/home.css";
 
 export const SingIn = () => {
     const BACKEND_URL = process.env.BACKEND_URL
-    const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate();
